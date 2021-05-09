@@ -9,7 +9,13 @@ from django.http import Http404, JsonResponse, HttpResponseRedirect
 
 # Create your views here.
 def home_view(request):
-    return render(request, 'blog/index.html',{})
+    top_posts = Post.objects.order_by('-views')[:3]
+
+    latest_posts = Post.objects.order_by('-date_published')[:3]
+
+    context = {'top_posts':top_posts, 'latest_posts':latest_posts}
+
+    return render(request, 'blog/index.html',context)
 
 def blog_view(request):
     return render(request, 'blog/blog.html', {})

@@ -16,6 +16,15 @@ class Blogger(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def profile_picURL(self):
+        try:
+            url = self.profile_pic.url
+        except:
+            url = 'static/img/user.svg'
+
+        return url
+
 class Post(models.Model):
     title = models.CharField(max_length=200, blank=True, null=True)
     post_pic = models.ImageField(blank=True, null=True )
