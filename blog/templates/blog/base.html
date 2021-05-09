@@ -28,13 +28,17 @@
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+    <script>
+      var csrf = '{{ csrf_token }}'
+    </script>
+    
   </head>
   <body>
     <header class="header">
       <!-- Main Navbar-->
       <nav class="navbar navbar-expand-lg">
         <!-- Search area -->
-        <!-- <div class="search-area">
+        <div class="search-area">
           <div class="search-area-inner d-flex align-items-center justify-content-center">
             <div class="close-btn"><i class="icon-close"></i></div>
             <div class="row d-flex justify-content-center">
@@ -48,7 +52,7 @@
               </div>
             </div>
           </div>
-        </div> -->
+        </div>
         <div class="container">
           <!-- Navbar Brand -->
           <div class="navbar-header d-flex align-items-center justify-content-between">
@@ -63,13 +67,13 @@
               </li>
               <li class="nav-item"><a href="{% url 'blog' %}" class="nav-link {% block blog_page_header %}{% endblock blog_page_header %}">Blog</a>
               </li>
-              <li class="nav-item"><a href="{% url 'post' %}" class="nav-link {% block post_page_header %}{% endblock post_page_header %}">Post</a>
+              <li class="nav-item"><a href="{% url 'post' 1 %}" class="nav-link {% block post_page_header %}{% endblock post_page_header %}">Post</a>
               </li>
               <li class="nav-item"><a href="#" class="nav-link ">Contact</a>
               </li>
             </ul>
-            <!-- <div class="navbar-text"><a href="#" class="search-btn"><i class="icon-search-1"></i></a></div>
-            <ul class="langs navbar-text"><a href="#" class="active">EN</a><span>           </span><a href="#">ES</a></ul> -->
+            <div class="navbar-text"><a href="#" class="search-btn"><i class="icon-search-1"></i></a></div>
+            <ul class="langs navbar-text"><a class="active">EN</a><span>           </span></ul>
           </div>
         </div>
       </nav>
