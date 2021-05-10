@@ -7,6 +7,8 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.http import Http404, JsonResponse, HttpResponseRedirect
 
+from django.core.paginator import Paginator
+
 # Create your views here.
 def home_view(request):
     top_posts = Post.objects.order_by('-views')[:3]
@@ -18,7 +20,20 @@ def home_view(request):
     return render(request, 'blog/index.html',context)
 
 def blog_view(request):
-    return render(request, 'blog/blog.html', {})
+
+    latest_posts = Post.objects.order_by('-date_published')
+
+    paginator = Paginator(latest_posts,2)
+
+    page = request.GET.get('page')
+    
+    try:
+        page_posts = paginator.page(page)
+    except:
+        page_posts = paginator.page(1)
+
+    context = {'posts':page_posts, 'latest_posts':latest_posts[:3]}
+    return render(request, 'blog/blog.html', context)
 
 def post_view(request, pk):
 
