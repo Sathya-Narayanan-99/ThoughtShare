@@ -21,7 +21,7 @@ class Blogger(models.Model):
         try:
             url = self.profile_pic.url
         except:
-            url = 'static/img/user.svg'
+            url = '/static/img/user.svg'
 
         return url
 

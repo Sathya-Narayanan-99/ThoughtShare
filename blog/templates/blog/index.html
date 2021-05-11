@@ -15,7 +15,7 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-7">
-        <h1>Thought Share - A fucking place to share your fucking thoughts</h1>
+        <h1>Thought Share - A place to share your thoughts</h1>
       </div>
     </div><a href=".intro" class="continue link-scroll"><i class="fa fa-long-arrow-down"></i> Scroll Down</a>
   </div>
@@ -42,7 +42,7 @@
               <div class="category"><a href="#">{{top_posts.0.category}}</a><a href="{% url 'post' top_posts.0.id %}">
                 <h2 class="h4">{{top_posts.0.title}}</h2></a>
             </header>
-            <p>{{top_posts.0.content|truncatechars:320}}</p>
+            <p>{{top_posts.0.content|safe|truncatewords_html:50}}</p>
             <footer class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
                 <div class="avatar"><img src="{{top_posts.0.author.profile_picURL}}" alt="..." class="img-fluid"></div>
                 <div class="title"><span>{{top_posts.0.author.name}}</span></div></a>
@@ -64,7 +64,7 @@
               <div class="category"><a href="#">{{top_posts.1.category}}</a></div><a href="{% url 'post' top_posts.1.id %}">
                 <h2 class="h4">{{top_posts.1.title}}</h2></a>
             </header>
-            <p>{{top_posts.1.content|truncatechars:300}}</p>
+            <p>{{top_posts.1.content|safe|truncatewords_html:50}}</p>
             <footer class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
                 <div class="avatar"><img src="{{top_posts.1.author.profile_picURL}}" alt="..." class="img-fluid"></div>
                 <div class="title"><span>{{top_posts.1.author.name}}</span></div></a>
@@ -84,7 +84,7 @@
               <div class="category"><a href="#">{{top_posts.2.category}}</a></div><a href="{% url 'post' top_posts.2.id %}">
                 <h2 class="h4">{{top_posts.2.title}}</h2></a>
             </header>
-            <p>{{top_posts.2.content|truncatechars:320}}</p>
+            <p>{{top_posts.2.content|safe|truncatewords_html:50}}</p>
             <footer class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
                 <div class="avatar"><img src="{{top_posts.2.author.profile_picURL}}" alt="..." class="img-fluid"></div>
                 <div class="title"><span>{{top_posts.2.author}}</span></div></a>
@@ -103,7 +103,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-7">
-        <h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</h2><a href="#" class="hero-link">View More</a>
+        <h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</h2><a href=".latest-posts" class="hero-link continue link-scroll">View More</a>
       </div>
     </div>
   </div>
@@ -126,7 +126,7 @@
             <div class="category"><a href="#">{{latest_post.category}}</a></div><br>
           </div><a href="{% url 'post' latest_post.id %}">
             <h3 class="h4">{{latest_post.title}}</h3></a>
-          <p class="text-muted">{{latest_post.content|truncatechars:150}}</p>
+          <p class="text-muted">{{latest_post.content|safe|truncatewords_html:20}}</p>
         </div>
       </div>
       {% endfor %}

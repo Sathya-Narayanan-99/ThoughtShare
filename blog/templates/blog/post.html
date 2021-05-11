@@ -25,13 +25,13 @@
                 <div class="avatar"><img src="{{post.author.profile_picURL}}" alt="..." class="img-fluid"></div>
                 <div class="title"><span>{{post.author.name}}</span></div></a>
               <div class="d-flex align-items-center flex-wrap">       
-                <div class="date"><i class="icon-clock"></i>{{post.date_published|date:"d M Y"}}</div>
+                <div class="date"><i class="icon-clock"></i>{{post.date_published}}</div>
                 <div class="views"><i class="icon-eye"></i> {{post.views}}</div>
-                <div class="comments meta-last"><i class="icon-comment"></i>{{post.comment_count}}</div>
+                <div class="comments meta-last"><a href=".post-comments" class="continue link-scroll"><i class="icon-comment"></i>{{post.comment_count}}</a></div>
               </div>
             </div>
             <div class="post-body">
-              <p class="lead">{{post.content|linebreaksbr}}</p>
+              <p class="lead">{{post.content|safe}}</p>
             </div>
             <div class="post-tags"><a href="#" class="tag">#Business</a><a href="#" class="tag">#Tricks</a><a href="#" class="tag">#Financial</a><a href="#" class="tag">#Economy</a></div>
 
