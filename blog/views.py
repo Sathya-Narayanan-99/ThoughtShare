@@ -9,6 +9,7 @@ from django.http import Http404, JsonResponse, HttpResponseRedirect
 
 from django.core.paginator import Paginator
 
+from .forms import PostForm
 # Create your views here.
 def home_view(request):
     top_posts = Post.objects.order_by('-views')[:3]
@@ -64,6 +65,14 @@ def post_view(request, pk):
     context = {'post':post, 'prev_post':prev_post, 'next_post':next_post, 'comments':comments,
                 'latest_posts':latest_posts}
     return render(request, 'blog/post.html', context)
+
+def new_post_view(request):
+    
+    if request.method == 'GET':
+    
+        form = PostForm()
+        context = {'form':form}
+        return render(request, 'blog/new_post.html',context)
 
 def add_comment(request):
     

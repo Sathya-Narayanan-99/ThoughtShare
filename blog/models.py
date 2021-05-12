@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from ckeditor.fields import RichTextField
 post_category = {
     ("Growth", "Growth"),
     ("Bussiness", "Bussiness")
@@ -31,7 +32,7 @@ class Post(models.Model):
     category = models.CharField(max_length=200 ,choices=post_category)
     author = models.ForeignKey(Blogger, on_delete=models.SET_NULL, null=True)
     date_published = models.DateTimeField(blank=True, null=True)
-    content = models.TextField(blank=True, null=True)
+    content = RichTextField(blank=True, null=True)
     views = models.IntegerField(default=0,null=True, blank=True)
 
     def __str__(self):

@@ -1,0 +1,52 @@
+{% extends 'blog/base.html' %}
+
+{% load static %}
+
+
+{% block post_page_header %}
+    active
+{% endblock post_page_header %}
+    
+
+{% block content %}
+  <div class="container">
+      <div class="row">
+          <main class="blog-post col-lg-8">
+              <div class="container">
+                  <div class="post-single">
+                      <div class="add-comment">
+                          <header>
+                              <h1>Create your awesome post</h1>
+                          </header>
+                          <form class="commenting-form">
+                              {{form.media}}
+                            <div class="row">
+                                <br>
+                                <div class="form-group col-md-12">
+                                    <h4>Post Title</h4>
+                                    <br>
+                                    {{form.title}}
+                                </div>
+                                <br>
+                                <div class="form-group col-md-12">
+                                    <h4>Post Content</h4>
+                                    <br>
+                                    {{form.content}}
+                                </div>
+                                <br>
+                                <div class="form-group col-6">
+                                    <button style="width: 180px;" type="submit" class="btn btn-secondary">Save</button>
+                                </div>
+                                <div class="form-group col-6">
+                                    <button style="width: 180px;" type="submit" class="btn btn-success float-right">Post</button>
+                                </div>
+                            </div>
+                        </form>
+                      </div>
+                  </div>
+              </div>
+          </main>
+      </div>
+  </div>
+{% endblock content %}
+    
