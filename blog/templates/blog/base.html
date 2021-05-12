@@ -63,14 +63,25 @@
           <!-- Navbar Menu -->
           <div id="navbarcollapse" class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
+              {% if user.is_superuser %}
+              <li class="nav-item"><a href="{% url 'admin:index' %}" class="nav-link">Admin</a>
+              </li>
+              {% endif %}
               <li class="nav-item"><a href="{% url 'home' %}" class="nav-link {% block home_page_header %}{% endblock home_page_header %}">Home</a>
               </li>
               <li class="nav-item"><a href="{% url 'blog' %}" class="nav-link {% block blog_page_header %}{% endblock blog_page_header %}">Blog</a>
               </li>
+              {% if user.is_authenticated %}
               <li class="nav-item"><a href="{% url 'new_post' %}" class="nav-link {% block post_page_header %}{% endblock post_page_header %}">Post</a>
               </li>
-              <li class="nav-item"><a href="#" class="nav-link ">Contact</a>
+              <li class="nav-item"><a href="#" class="nav-link ">Drafts</a>
               </li>
+              <li class="nav-item"><a href="#" class="nav-link ">Logout</a>
+              </li>
+              {% else %}
+              <li class="nav-item"><a href="#" class="nav-link ">Login</a>
+              </li>
+              {% endif %}
             </ul>
             <div class="navbar-text"><a href="#" class="search-btn"><i class="icon-search-1"></i></a></div>
             <ul class="langs navbar-text"><a class="active">EN</a></ul>

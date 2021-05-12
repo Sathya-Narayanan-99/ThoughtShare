@@ -1,10 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+import datetime
+
 from ckeditor.fields import RichTextField
 post_category = {
     ("Growth", "Growth"),
-    ("Bussiness", "Bussiness")
+    ("Bussiness", "Bussiness"),
+    ("Others", "Others")
 }
 
 # Create your models here.
@@ -55,6 +58,10 @@ class Post(models.Model):
             commentCount = 0
 
         return commentCount
+
+    def publish(self):
+        self.published = True
+        self.date_published = datetime.datetime.now()
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True)

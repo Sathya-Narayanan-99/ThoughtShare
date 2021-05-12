@@ -3,7 +3,8 @@ from .models import *
 
 import json
 
-from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
+
 from django.urls import reverse
 from django.http import Http404, JsonResponse, HttpResponseRedirect
 
@@ -49,14 +50,12 @@ def post_view(request, pk):
         prev_post = Post.objects.get(id=pk-1)
     except Exception as e:
         prev_post = None
-        print(e)
 
     try:
         next_post = Post.objects.get(id=pk+1)
 
     except Exception as e:
         next_post = None
-        print(e)
     
     latest_posts = Post.objects.order_by('-date_published')[:3]
 
@@ -66,6 +65,7 @@ def post_view(request, pk):
                 'latest_posts':latest_posts}
     return render(request, 'blog/post.html', context)
 
+@login_required
 def new_post_view(request):
     
     if request.method == 'GET':
@@ -73,6 +73,23 @@ def new_post_view(request):
         form = PostForm()
         context = {'form':form}
         return render(request, 'blog/new_post.html',context)
+    
+    else:
+
+        form = PostForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            content = form.cleaned_data['content']
+            category = form.cleaned_data['category']
+            post_pic = form.cleaned_data['post_pic']
+            blogger = Blogger.objects.get(user = request.user)
+
+            post = Post(title=title, post_pic=post_pic, category=category, author=blogger, content=content)
+            post.publish()
+            post.save()
+
+        return HttpResponseRedirect(reverse('post',args= [post.id]))
 
 
 #--------------------------------------------------------------------------------------------------
@@ -84,11 +101,11 @@ def add_comment(request):
     data = json.loads(request.body)
 
     pk = data['postId']
-    print(pk, data)
+
     try:
         post = Post.objects.get(id=pk)
     except Exception as e:
-        print(e)
+        print("Exception while adding comment",e)
     
     username = data['form']['username']
     email = data['form']['email']
