@@ -12,7 +12,7 @@ from django.core.paginator import Paginator
 from .forms import PostForm
 # Create your views here.
 def home_view(request):
-    top_posts = Post.objects.order_by('-views')[:3]
+    top_posts = Post.objects.filter(published=True).order_by('-views')[:3]
 
     latest_posts = Post.objects.order_by('-date_published')[:3]
 
@@ -22,7 +22,7 @@ def home_view(request):
 
 def blog_view(request):
 
-    latest_posts = Post.objects.order_by('-date_published')
+    latest_posts = Post.objects.filter(published=True).order_by('-date_published')
 
     paginator = Paginator(latest_posts,2)
 
@@ -73,6 +73,11 @@ def new_post_view(request):
         form = PostForm()
         context = {'form':form}
         return render(request, 'blog/new_post.html',context)
+
+
+#--------------------------------------------------------------------------------------------------
+#
+#--------------------------------------------------------------------------------------------------
 
 def add_comment(request):
     
