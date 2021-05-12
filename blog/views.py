@@ -107,8 +107,14 @@ def add_comment(request):
     except Exception as e:
         print("Exception while adding comment",e)
     
-    username = data['form']['username']
-    email = data['form']['email']
+    if request.user.is_authenticated:
+        blogger = Blogger.objects.get(user=request.user)
+        username = blogger.name
+        email = blogger.email
+    else:
+        username = data['form']['username']
+        email = data['form']['email']
+    
     content = data['form']['content']
 
     comment = Comment(post=post, name=username, email=email, content=content)

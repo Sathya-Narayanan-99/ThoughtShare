@@ -3,11 +3,18 @@ form = document.getElementById('comment-form');
 form.addEventListener("submit",function(e){
     e.preventDefault();
 
-    var commentFormData = {
-        'username' : form.username.value,
-        'email' : form.email.value,
-        'content' : form.content.value,
+    if (user == 'AnonymousUser'){
+        var commentFormData = {
+            'username' : form.username.value,
+            'email' : form.email.value,
+            'content' : form.content.value,
+        }
+    }else{
+        var commentFormData = {
+            'content' : form.content.value,
+        }        
     }
+
     
     url = '/add_comment/'
     fetch(url,{

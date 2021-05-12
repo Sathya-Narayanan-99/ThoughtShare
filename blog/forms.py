@@ -11,3 +11,4 @@ class PostForm(forms.Form):
 
     title.widget.attrs.update({'placeholder':'Post Title','class':'form-control','style':'height: 50px; font-size: 30px;'})
     content.widget.attrs.update({'placeholder':'Type your blog content here','class':'form-control','style':'height: 8000px;'})
+    category.widget.attrs.update({'class':'form-control'})

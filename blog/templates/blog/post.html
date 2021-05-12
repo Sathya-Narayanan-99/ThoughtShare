@@ -6,6 +6,7 @@
 
 <script>
   var postId = '{{post.id}}';
+  var user = '{{user}}';
 </script>
 
 <div class="container">
@@ -79,12 +80,14 @@
               <form id="comment-form" class="commenting-form">
 
                 <div class="row">
+                  {% if not user.is_authenticated %}
                   <div class="form-group col-md-6">
                     <input type="text" name="username" id="username" placeholder="Name" class="form-control" required>
                   </div>
                   <div class="form-group col-md-6">
                     <input type="email" name="email" id="useremail" placeholder="Email Address (will not be published)" class="form-control" required>
                   </div>
+                  {% endif %}
                   <div class="form-group col-md-12">
                     <textarea name="content" id="usercomment" placeholder="Type your comment" class="form-control" required></textarea>
                   </div>
