@@ -79,13 +79,10 @@ def new_post_view(request):
         form = PostForm(request.POST, request.FILES)
 
         if form.is_valid():
-            title = form.cleaned_data['title']
-            content = form.cleaned_data['content']
-            category = form.cleaned_data['category']
-            post_pic = form.cleaned_data['post_pic']
+            post = form.save(commit=False)
             blogger = Blogger.objects.get(user = request.user)
 
-            post = Post(title=title, post_pic=post_pic, category=category, author=blogger, content=content)
+            post.author = blogger
             post.publish()
             post.save()
 
