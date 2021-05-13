@@ -60,7 +60,7 @@
               </header>
 
               {% for comment in comments %}
-              <div class="comment">
+              <div class="comment {% if forloop.counter > 3 %}d-none{% endif %}">
                 <div class="comment-header d-flex justify-content-between">
                   <div class="user d-flex align-items-center">
                     <div class="image"><img src="{% static 'img/user.svg' %}" alt="..." class="img-fluid rounded-circle"></div>
@@ -72,6 +72,9 @@
                 </div>
               </div>
               {% endfor %}
+              <div id="load-comments-div" class="form-group col-md-12 text-center">
+                <button id="load-comments" class="btn btn-outline-secondary">Load more</button>
+              </div>
 
             <div class="add-comment">
               <header>
@@ -92,7 +95,7 @@
                     <textarea name="content" id="usercomment" placeholder="Type your comment" class="form-control" required></textarea>
                   </div>
                   <div class="form-group col-md-12">
-                    <button type="submit" class="btn btn-secondary">Submit Comment</button>
+                    <button type="submit" class="btn btn-outline-secondary">Submit Comment</button>
                   </div>
                 </div>
               </form>

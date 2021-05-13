@@ -41,8 +41,11 @@ def post_view(request, pk):
 
     try:
         post = Post.objects.get(id=pk)
-        post.views += 1
-        post.save()
+        
+        if request.user != post.author.user:
+            post.views += 1
+            post.save()
+            
     except:
         raise Http404
 

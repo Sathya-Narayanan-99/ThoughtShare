@@ -35,3 +35,21 @@ form.addEventListener("submit",function(e){
     })
 })
 form.reset();
+
+var comments = document.getElementsByClassName("d-none");
+
+if (comments.length === 0){
+    document.getElementById("load-comments-div").innerHTML='';
+}
+
+document.getElementById("load-comments").addEventListener('click',function(){
+    for(var i=0;i<3;i++){
+        if (comments[0] != undefined){
+            comments[0].classList.remove("d-none")
+        }
+    }
+    if (comments.length === 0){
+        document.getElementById("load-comments-div").innerHTML='';
+    }
+})
+
