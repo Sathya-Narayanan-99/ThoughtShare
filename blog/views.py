@@ -41,7 +41,7 @@ def blog_view(request):
 def post_view(request, pk):
 
     try:
-        post = Post.objects.get(id=pk)
+        post = Post.objects.get(id=pk, published=True)
         
         if request.user != post.author.user:
             post.views += 1
@@ -105,7 +105,26 @@ def draft_view(request):
 
 def edit_post_view(request):
     return HttpResponse("Edit post view")
-    
+
+@login_required
+def preview_post_view(request,pk):
+    try:
+        post = Post.objects.get(id=pk, published=False)
+    except:
+        raise Http404
+
+    if request.user == post.author.user:
+        latest_posts = Post.objects.order_by('-date_published')[:3]
+
+        context = {'post':post, 'latest_posts':latest_posts}
+
+        return render(request, 'blog/preview.html', context)
+    else:
+        raise Http404
+
+
+
+
 
 #--------------------------------------------------------------------------------------------------
 #
@@ -148,5 +167,23 @@ def add_to_draft(request):
             post.save()
 
             return HttpResponseRedirect(reverse('draft'))
+    else:
+        raise Http404
+
+@login_required
+def publish_post(request, pk):
+    if request.method == 'POST':
+        try:
+            post = Post.objects.get(id=pk)
+        except:
+            raise Http404
+        
+        if request.user == post.author.user:
+            post.publish()
+            post.save()
+
+            return HttpResponseRedirect(reverse('post',args=[post.id]))
+        else:
+            raise Http404
     else:
         raise Http404

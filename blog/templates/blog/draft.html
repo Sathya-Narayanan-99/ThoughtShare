@@ -22,12 +22,12 @@
           {% if posts %}
           {% for post in posts %}
           <div class="post col-xl-6">
-            <div class="post-thumbnail"><a href="{% url 'post' post.id %}"><img style="width: 400px; height: 200px;" src="{{post.imageURL}}" alt="..." class="img-fluid"></a></div>
+            <div class="post-thumbnail"><a href="{% url 'preview' post.id %}"><img style="width: 400px; height: 200px;" src="{{post.imageURL}}" alt="..." class="img-fluid"></a></div>
             <div class="post-details">
               <div class="post-meta d-flex justify-content-between">
                 <div class="date meta-last">{{post.date_published}}</div>
                 <div class="category"><a href="#">{{post.category}}</a></div>
-              </div><a href="{% url 'post' post.id %}">
+              </div><a href="{% url 'preview' post.id %}">
                 <h3 class="h4">{{post.title}}</h3></a>
               <p class="text-muted">{{post.content|safe|truncatechars_html:180}}</p>
               <footer class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
@@ -36,8 +36,12 @@
               </footer>
               <br>
               <div>
-                <button class="btn btn-outline-dark">Edit Post</button>
-                <button class="btn btn-outline-dark float-right">Publish</button></div>
+                <form method="POST">
+                  {% csrf_token %}
+                  <button class="btn btn-outline-dark">Edit Post</button>
+                  <button class="btn btn-outline-dark float-right" formaction="{% url 'publish_post' post.id %}">Publish</button>
+                </form>
+              </div>
             </div>
           </div>
           {% endfor %}
