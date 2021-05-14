@@ -74,7 +74,7 @@
               {% if user.is_authenticated %}
               <li class="nav-item"><a href="{% url 'new_post' %}" class="nav-link {% block post_page_header %}{% endblock post_page_header %}">Post</a>
               </li>
-              <li class="nav-item"><a href="#" class="nav-link ">Drafts</a>
+              <li class="nav-item"><a href="{% url 'draft' %}" class="nav-link {% block draft_page_header %}{% endblock draft_page_header %}">Drafts</a>
               </li>
               <li class="nav-item"><a href="#" class="nav-link ">Logout</a>
               </li>

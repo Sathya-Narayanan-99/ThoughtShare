@@ -140,5 +140,6 @@ CKEDITOR_CONFIGS = {
     'default': {
         'height': 800,
         'width': 'auto',
+        'contentsCss':'img {width: auto;}'
     },
 }

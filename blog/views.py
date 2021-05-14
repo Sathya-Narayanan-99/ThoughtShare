@@ -1,3 +1,4 @@
+from django.http.response import HttpResponse
 from django.shortcuts import render
 from .models import *
 
@@ -45,7 +46,7 @@ def post_view(request, pk):
         if request.user != post.author.user:
             post.views += 1
             post.save()
-            
+
     except:
         raise Http404
 
@@ -91,6 +92,20 @@ def new_post_view(request):
 
         return HttpResponseRedirect(reverse('post',args= [post.id]))
 
+@login_required
+def draft_view(request):
+    author = Blogger.objects.get(user=request.user)
+    
+    drafts = Post.objects.filter(author=author, published=False)
+    lastest_posts = Post.objects.filter(published=True).order_by("-date_published")[:3]
+
+    context = {'posts':drafts, 'latest_posts':lastest_posts}
+
+    return render(request, 'blog/draft.html', context)
+
+def edit_post_view(request):
+    return HttpResponse("Edit post view")
+    
 
 #--------------------------------------------------------------------------------------------------
 #
@@ -120,3 +135,18 @@ def add_comment(request):
     comment = Comment(post=post, name=username, email=email, content=content)
     comment.save()
     return JsonResponse("comment was added", safe=False)
+
+def add_to_draft(request):
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            post = form.save(commit=False)
+
+            author = Blogger.objects.get(user = request.user)
+            post.author = author
+            post.save()
+
+            return HttpResponseRedirect(reverse('draft'))
+    else:
+        raise Http404
