@@ -200,6 +200,7 @@ def publish_post(request, pk):
     else:
         raise Http404
 
+@login_required
 def add_edit_draft(request, pk):
     if request.method == 'POST':
         post = get_object_or_404(Post, id=pk)

@@ -42,7 +42,7 @@
               <div class="category"><a href="#">{{top_posts.0.category}}</a><a href="{% url 'post' top_posts.0.id %}">
                 <h2 class="h4">{{top_posts.0.title}}</h2></a>
             </header>
-            <p>{{top_posts.0.content|safe|truncatewords_html:50}}</p>
+            <p>{{top_posts.0.description|truncatechars:200}}</p>
             <footer class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
                 <div class="avatar"><img src="{{top_posts.0.author.profile_picURL}}" alt="..." class="img-fluid"></div>
                 <div class="title"><span>{{top_posts.0.author.name}}</span></div></a>
@@ -64,7 +64,7 @@
               <div class="category"><a href="#">{{top_posts.1.category}}</a></div><a href="{% url 'post' top_posts.1.id %}">
                 <h2 class="h4">{{top_posts.1.title}}</h2></a>
             </header>
-            <p>{{top_posts.1.content|safe|truncatewords_html:50}}</p>
+            <p>{{top_posts.1.description|truncatechars:200}}</p>
             <footer class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
                 <div class="avatar"><img src="{{top_posts.1.author.profile_picURL}}" alt="..." class="img-fluid"></div>
                 <div class="title"><span>{{top_posts.1.author.name}}</span></div></a>
@@ -84,7 +84,7 @@
               <div class="category"><a href="#">{{top_posts.2.category}}</a></div><a href="{% url 'post' top_posts.2.id %}">
                 <h2 class="h4">{{top_posts.2.title}}</h2></a>
             </header>
-            <p>{{top_posts.2.content|safe|truncatewords_html:50}}</p>
+            <p>{{top_posts.2.description|truncatechars:200}}</p>
             <footer class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
                 <div class="avatar"><img src="{{top_posts.2.author.profile_picURL}}" alt="..." class="img-fluid"></div>
                 <div class="title"><span>{{top_posts.2.author}}</span></div></a>
@@ -113,7 +113,7 @@
   <div class="container">
     <header> 
       <h2>Latest from the blog</h2>
-      <p class="text-big">Few of out latest posts that you won't want to miss out on...</p>
+      <p class="text-big">Few of our latest posts that you won't want to miss out on...</p>
     </header>
     <div class="row">
 
@@ -126,7 +126,7 @@
             <div class="category"><a href="#">{{latest_post.category}}</a></div><br>
           </div><a href="{% url 'post' latest_post.id %}">
             <h3 class="h4">{{latest_post.title}}</h3></a>
-          <p class="text-muted">{{latest_post.content|safe|truncatewords_html:20}}</p>
+          <p class="text-muted">{{latest_post.description|truncatechars:200}}</p>
         </div>
       </div>
       {% endfor %}

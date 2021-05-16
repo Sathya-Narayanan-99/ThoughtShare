@@ -33,6 +33,7 @@ class Post(models.Model):
     title = models.CharField(max_length=200, blank=True, null=True)
     post_pic = models.ImageField(blank=True, null=True )
     category = models.CharField(max_length=200 ,choices=post_category)
+    description = models.CharField(max_length=200, null=True, blank=True)
     author = models.ForeignKey(Blogger, on_delete=models.SET_NULL, null=True)
     date_published = models.DateTimeField(blank=True, null=True)
     content = RichTextField(blank=True, null=True)
