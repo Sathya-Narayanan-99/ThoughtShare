@@ -27,8 +27,8 @@
                 <div class="date meta-last">{{post.date_published}}</div>
                 <div class="category"><a href="#">{{post.category}}</a></div>
               </div><a href="{% url 'post' post.id %}">
-                <h3 class="h4">{{post.title}}</h3></a>
-              <p class="text-muted">{{post.description|truncatechars:200}}</p>
+                <h3 class="h4">{{post.title|truncatechars:50}}</h3></a>
+              <p class="text-muted">{{post.description|truncatechars:100}}</p>
               <footer class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
                   <div class="avatar"><img src="{{post.author.profile_picURL}}" alt="..." class="img-fluid"></div>
                   <div class="title"><span>{{post.author.name}}</span></div></a>

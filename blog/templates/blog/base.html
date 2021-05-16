@@ -76,10 +76,10 @@
               </li>
               <li class="nav-item"><a href="{% url 'draft' %}" class="nav-link {% block draft_page_header %}{% endblock draft_page_header %}">Drafts</a>
               </li>
-              <li class="nav-item"><a href="#" class="nav-link ">Logout</a>
+              <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link ">Logout</a>
               </li>
               {% else %}
-              <li class="nav-item"><a href="#" class="nav-link ">Login</a>
+              <li class="nav-item"><a href="{% url 'login' %}" class="nav-link {% block login_page_header %}{% endblock login_page_header %}">Login</a>
               </li>
               {% endif %}
             </ul>

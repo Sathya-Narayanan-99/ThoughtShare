@@ -1,0 +1,44 @@
+{% extends 'blog/base.html' %}
+
+{% load static %}
+
+
+{% block login_page_header %}
+    active
+{% endblock login_page_header %}
+    
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <main class="blog-post col-lg-8">
+            <div class="container">
+                <div class="post-single">
+                    <div class="add-comment">
+                        <header>
+                            <h2>Login Here</h2>
+                        </header>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <input style="font-size: 20px;" type="text" name="username" placeholder="username" class="form-control" required>
+                                </div>
+                                <div class="col-md-12"></div>
+                                <div class="form-group col-md-6">
+                                    <input style="font-size: 20px;" type="password" name="password" placeholder="password" class="form-control" required>
+                                </div>
+                                <div class="col-md-12"><br></div>
+                                <div class="form-group col-6">
+                                    <button style="width: 180px;" type="submit" class="btn btn-outline-dark">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock content %}
+    

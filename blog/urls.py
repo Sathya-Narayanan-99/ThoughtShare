@@ -11,6 +11,8 @@ urlpatterns = [
     path('edit/<int:pk>/', views.edit_post_view, name='edit'),
     path('preview/<int:pk>/', views.preview_post_view, name='preview'),
 
+    path('login/', views.user_login, name='login'),
+    path('logout/', views.user_logout, name='logout'),
 
     path('add_comment/', views.add_comment, name='add_comment'),
     path('add_to_draft/', views.add_to_draft, name='add_to_draft'),

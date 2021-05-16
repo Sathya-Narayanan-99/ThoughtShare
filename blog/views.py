@@ -5,6 +5,7 @@ from .models import *
 import json
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, logout, authenticate
 
 from django.urls import reverse
 from django.http import Http404, JsonResponse, HttpResponseRedirect
@@ -133,6 +134,31 @@ def preview_post_view(request,pk):
     else:
         raise Http404
 
+def user_login(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('home'))
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        user = authenticate(username=username, password=password)
+
+        if user:
+            if user.is_active:
+                login(request,user)
+                return HttpResponseRedirect(reverse('home'))
+            else:
+                return HttpResponse("User not active")
+        else:
+            return HttpResponse("Invalid Credentials")
+    else:
+        return render(request, 'blog/login.html',{})
+
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('home'))
+
 
 #--------------------------------------------------------------------------------------------------
 #
@@ -205,11 +231,14 @@ def add_edit_draft(request, pk):
     if request.method == 'POST':
         post = get_object_or_404(Post, id=pk)
 
-        form = PostForm(request.POST, request.FILES, instance=post)
-        if form.is_valid():
-            form.save()
+        if request.user == post.author.user:
+            form = PostForm(request.POST, request.FILES, instance=post)
+            if form.is_valid():
+                form.save()
 
-            if "preview-button" in request.POST:
-                return HttpResponseRedirect(reverse('preview', args=[pk]))
+                if "preview-button" in request.POST:
+                    return HttpResponseRedirect(reverse('preview', args=[pk]))
+                else:
+                    return HttpResponseRedirect(reverse('draft'))
             else:
-                return HttpResponseRedirect(reverse('draft'))
+                raise Http404
