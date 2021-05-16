@@ -1,5 +1,5 @@
 from django.http.response import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import *
 
 import json
@@ -16,7 +16,7 @@ from .forms import PostForm
 def home_view(request):
     top_posts = Post.objects.filter(published=True).order_by('-views')[:3]
 
-    latest_posts = Post.objects.order_by('-date_published')[:3]
+    latest_posts = Post.objects.filter(published=True).order_by('-date_published')[:3]
 
     context = {'top_posts':top_posts, 'latest_posts':latest_posts}
 
@@ -61,7 +61,7 @@ def post_view(request, pk):
     except Exception as e:
         next_post = None
     
-    latest_posts = Post.objects.order_by('-date_published')[:3]
+    latest_posts = Post.objects.filter(published=True).order_by('-date_published')[:3]
 
     comments = Comment.objects.filter(post=post)
 
@@ -96,15 +96,26 @@ def new_post_view(request):
 def draft_view(request):
     author = Blogger.objects.get(user=request.user)
     
-    drafts = Post.objects.filter(author=author, published=False)
-    lastest_posts = Post.objects.filter(published=True).order_by("-date_published")[:3]
+    drafts = Post.objects.filter(author=author, published=False).order_by("-id")
+    latest_posts = Post.objects.filter(published=True).order_by("-date_published")[:3]
 
-    context = {'posts':drafts, 'latest_posts':lastest_posts}
+    context = {'posts':drafts, 'latest_posts':latest_posts}
 
     return render(request, 'blog/draft.html', context)
 
-def edit_post_view(request):
-    return HttpResponse("Edit post view")
+@login_required
+def edit_post_view(request,pk):
+    post = get_object_or_404(Post, id=pk)
+
+    if request.user == post.author.user:
+
+        if post.title or post.post_pic or post.category or post.content:
+            form = PostForm(instance=post)
+            context = {'form':form, 'post':post}
+            return render(request, 'blog/edit.html', context)
+        
+    else:
+        raise Http404
 
 @login_required
 def preview_post_view(request,pk):
@@ -114,16 +125,13 @@ def preview_post_view(request,pk):
         raise Http404
 
     if request.user == post.author.user:
-        latest_posts = Post.objects.order_by('-date_published')[:3]
+        latest_posts = Post.objects.filter(published=True).order_by('-date_published')[:3]
 
         context = {'post':post, 'latest_posts':latest_posts}
 
         return render(request, 'blog/preview.html', context)
     else:
         raise Http404
-
-
-
 
 
 #--------------------------------------------------------------------------------------------------
@@ -155,6 +163,7 @@ def add_comment(request):
     comment.save()
     return JsonResponse("comment was added", safe=False)
 
+@login_required
 def add_to_draft(request):
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
@@ -166,7 +175,10 @@ def add_to_draft(request):
             post.author = author
             post.save()
 
-            return HttpResponseRedirect(reverse('draft'))
+            if 'preview-button' in request.POST:
+                return HttpResponseRedirect(reverse("preview",args=[post.id]))
+            else:
+                return HttpResponseRedirect(reverse('draft'))
     else:
         raise Http404
 
@@ -187,3 +199,16 @@ def publish_post(request, pk):
             raise Http404
     else:
         raise Http404
+
+def add_edit_draft(request, pk):
+    if request.method == 'POST':
+        post = get_object_or_404(Post, id=pk)
+
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            form.save()
+
+            if "preview-button" in request.POST:
+                return HttpResponseRedirect(reverse('preview', args=[pk]))
+            else:
+                return HttpResponseRedirect(reverse('draft'))

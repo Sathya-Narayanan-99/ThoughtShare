@@ -18,7 +18,7 @@
                           <header>
                               <h1>Create your awesome post</h1>
                           </header>
-                          <form id="post-form" class="commenting-form" action="{% url 'add_to_draft' %}" method="POST" enctype="multipart/form-data">
+                          <form id="post-form" class="commenting-form" action="{% url 'edit_draft' post.id %}" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}  
                             {{form.media}}
                             <div class="row">

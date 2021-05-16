@@ -25,7 +25,6 @@
             <div class="post-thumbnail"><a href="{% url 'preview' post.id %}"><img style="width: 400px; height: 200px;" src="{{post.imageURL}}" alt="..." class="img-fluid"></a></div>
             <div class="post-details">
               <div class="post-meta d-flex justify-content-between">
-                <div class="date meta-last">{{post.date_published}}</div>
                 <div class="category"><a href="#">{{post.category}}</a></div>
               </div><a href="{% url 'preview' post.id %}">
                 <h3 class="h4">{{post.title}}</h3></a>
@@ -37,9 +36,9 @@
               <br>
               <div>
                 <form method="POST">
-                  {% csrf_token %}
-                  <button class="btn btn-outline-dark">Edit Post</button>
+                  <button class="btn btn-outline-dark" formaction="{% url 'edit' post.id %}">Edit Post</button>
                   <button class="btn btn-outline-dark float-right" formaction="{% url 'publish_post' post.id %}">Publish</button>
+                  {% csrf_token %}
                 </form>
               </div>
             </div>
