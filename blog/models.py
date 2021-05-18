@@ -20,6 +20,10 @@ class Blogger(models.Model):
     def __str__(self):
         return self.name
 
+    def create(self):
+        self.name = self.user.first_name + ' ' + self.user.last_name
+        self.email = self.user.email
+
     @property
     def profile_picURL(self):
         try:

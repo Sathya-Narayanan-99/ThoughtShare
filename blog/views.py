@@ -4,8 +4,11 @@ from .models import *
 
 import json
 
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, password_validation
+from django.contrib import messages
+
 
 from django.urls import reverse
 from django.http import Http404, JsonResponse, HttpResponseRedirect
@@ -27,7 +30,7 @@ def blog_view(request):
 
     latest_posts = Post.objects.filter(published=True).order_by('-date_published')
 
-    paginator = Paginator(latest_posts,2)
+    paginator = Paginator(latest_posts,4)
 
     page = request.GET.get('page')
     
@@ -52,12 +55,13 @@ def post_view(request, pk):
         raise Http404
 
     try:
-        prev_post = Post.objects.get(id=pk-1)
+        prev_post = Post.objects.filter(id__lt=post.id, published=True).order_by('-id').first()
+    
     except Exception as e:
         prev_post = None
 
     try:
-        next_post = Post.objects.get(id=pk+1)
+        next_post = Post.objects.filter(id__gt=post.id, published=True).order_by('id').first()
 
     except Exception as e:
         next_post = None
@@ -139,7 +143,7 @@ def user_login(request):
         return HttpResponseRedirect(reverse('home'))
 
     if request.method == 'POST':
-        username = request.POST.get('username')
+        username = request.POST.get('username').strip().lower()
         password = request.POST.get('password')
         
         user = authenticate(username=username, password=password)
@@ -149,17 +153,64 @@ def user_login(request):
                 login(request,user)
                 return HttpResponseRedirect(reverse('home'))
             else:
-                return HttpResponse("User not active")
+                messages.error(request, "Your account is not active!")
+                return render(request, 'blog/login.html',{})
         else:
-            return HttpResponse("Invalid Credentials")
+            messages.error(request, "Your username or password was incorrect!")
+            return render(request, 'blog/login.html',{})
     else:
         return render(request, 'blog/login.html',{})
 
+@login_required
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('home'))
 
+def user_registration(request):
+    passwordValidations = password_validation.password_validators_help_texts()
 
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('home'))
+    
+    if request.method == 'POST':
+        username = request.POST.get('username').strip().lower()
+        email = request.POST.get('email').strip().lower()
+        fname = request.POST.get('fname').capitalize()
+        lname = request.POST.get('lname').capitalize()
+        password = request.POST.get('password')
+        rpassword = request.POST.get('rpassword')
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request,"Sorry! Username is already taken")
+            return render (request, 'blog/registration.html',{'passwordValidations':passwordValidations})
+
+        if User.objects.filter(email=email).exists():
+            messages.error(request,"The email Id is already in use")
+            return render (request, 'blog/registration.html',{'passwordValidations':passwordValidations})
+        
+        if password != rpassword:
+            messages.error(request,"The passwords do not match")
+            return render (request, 'blog/registration.html',{'passwordValidations':passwordValidations})
+        
+        try:
+            password_validation.validate_password(password)
+        except Exception as e:
+            for error in e:
+                messages.error(request, error)
+            return render (request, 'blog/registration.html',{'passwordValidations':passwordValidations})
+
+        user = User(is_superuser=False, is_staff=False, username=username, email=email, first_name=fname, last_name=lname)
+        user.set_password(password)
+        user.save()
+
+        blogger = Blogger(user=user)
+        blogger.create()
+        blogger.save()
+
+        return HttpResponseRedirect(reverse('login'))
+        
+    else:
+        return render (request, 'blog/registration.html',{'passwordValidations':passwordValidations})
 #--------------------------------------------------------------------------------------------------
 #
 #--------------------------------------------------------------------------------------------------

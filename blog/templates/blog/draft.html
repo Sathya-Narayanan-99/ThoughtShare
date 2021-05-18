@@ -21,7 +21,7 @@
           
           {% if posts %}
           {% for post in posts %}
-          <div class="post col-xl-6">
+          <div style="height: 475px;" class="post col-xl-6">
             <div class="post-thumbnail"><a href="{% url 'preview' post.id %}"><img style="width: 400px; height: 200px;" src="{{post.imageURL}}" alt="..." class="img-fluid"></a></div>
             <div class="post-details">
               <div class="post-meta d-flex justify-content-between">
@@ -29,15 +29,15 @@
               </div><a href="{% url 'preview' post.id %}">
                 <h3 class="h4">{{post.title|truncatechars:50}}</h3></a>
               <p class="text-muted">{{post.description|truncatechars:100}}</p>
-              <footer class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
+              <footer style="position: absolute; bottom: 50px;" class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
                   <div class="avatar"><img src="{{post.author.profile_picURL}}" alt="..." class="img-fluid"></div>
                   <div class="title"><span>{{post.author.name}}</span></div></a>
               </footer>
               <br>
               <div>
                 <form method="POST">
-                  <button class="btn btn-outline-dark" formaction="{% url 'edit' post.id %}">Edit Post</button>
-                  <button class="btn btn-outline-dark float-right" formaction="{% url 'publish_post' post.id %}">Publish</button>
+                  <button style="position: absolute; bottom: -10px; padding-top: 10px;" class="btn btn-outline-dark" formaction="{% url 'edit' post.id %}">Edit Post</button>
+                  <button style="position: absolute; bottom: -10px; padding-top: 10px; right: 15px;" class="btn btn-outline-dark float-right" formaction="{% url 'publish_post' post.id %}">Publish</button>
                   {% csrf_token %}
                 </form>
               </div>
