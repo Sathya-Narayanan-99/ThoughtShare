@@ -2,12 +2,6 @@
 
 {% load static %}
 
-
-{% block draft_page_header %}
-  active
-{% endblock draft_page_header %}
-  
-
 {% block content %}
 
 
@@ -16,40 +10,34 @@
     <!-- Latest Posts -->
     <main class="posts-listing col-lg-8"> 
       <div class="container">
+        <div style="text-align: center;padding-bottom: 30px;">
+            <h3>You searched for '{{search_term}}'</h3>
+        </div>
+        {% if posts %}
         <div class="row">
           <!-- post -->
-          
-          {% if posts %}
           {% for post in posts %}
-          <div style="height: 475px;" class="post col-xl-6">
-            <div class="post-thumbnail"><a href="{% url 'preview' post.id %}"><img style="width: 400px; height: 200px;" src="{{post.imageURL}}" alt="..." class="img-fluid"></a></div>
+          <div style="height: 400px;" class="post col-xl-6">
+            <div class="post-thumbnail"><a href="{% url 'post' post.id %}"><img style="width: 400px; height: 200px;" src="{{post.imageURL}}" alt="..." class="img-fluid"></a></div>
             <div class="post-details">
               <div class="post-meta d-flex justify-content-between">
+                <div class="date meta-last">{{post.date_published}}</div>
                 <div class="category"><a href="#">{{post.category}}</a></div>
-              </div><a href="{% url 'preview' post.id %}">
+              </div><a href="{% url 'post' post.id %}">
                 <h3 class="h4">{{post.title|truncatechars:50}}</h3></a>
               <p class="text-muted">{{post.description|truncatechars:100}}</p>
-              <footer style="position: absolute; bottom: 50px;" class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
+              <footer style="position: absolute; bottom: -10px; padding-top: 10px;" class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
                   <div class="avatar"><img src="{{post.author.profile_picURL}}" alt="..." class="img-fluid"></div>
                   <div class="title"><span>{{post.author.name}}</span></div></a>
+                <div class="date"><i class="icon-clock"></i>{{post.date_published|date:"d M Y"}}</div>
+                <div class="comments meta-last"><i class="icon-comment"></i>{{post.comment_count}}</div>
               </footer>
-              <br>
-              <div>
-                <form method="POST">
-                  <button style="position: absolute; bottom: -10px; padding-top: 10px;" class="btn btn-outline-dark" formaction="{% url 'edit' post.id %}">Edit Post</button>
-                  <button style="position: absolute; bottom: -10px; padding-top: 10px; right: 15px;" class="btn btn-outline-dark float-right" formaction="{% url 'publish_post' post.id %}">Publish</button>
-                  {% csrf_token %}
-                </form>
-              </div>
             </div>
           </div>
           {% endfor %}
-          {% else %}
-          <h2>Looks like there's nothing in your drafts.</h2>
-          {% endif %}
         </div>
         <!-- Pagination -->
-        <!-- <nav aria-label="Page navigation example">
+        <nav aria-label="Page navigation example">
           <ul class="pagination pagination-template d-flex justify-content-center">
             {% if posts.has_previous %}
             <li class="page-item"><a href="?page={{ posts.previous_page_number }}" class="page-link"> <i class="fa fa-angle-left"></i></a></li>
@@ -62,7 +50,12 @@
             <li class="page-item"><a href="?page={{ posts.next_page_number }}" class="page-link"> <i class="fa fa-angle-right"></i></a></li>
             {% endif %}
           </ul>
-        </nav> -->
+        </nav>
+        {% else %}
+        <div style="text-align: center; padding-bottom: 30px;">
+            <h4>Sorry, your search does not match anything...</h4>
+        </div>
+        {% endif %}
       </div>
     </main>
     <aside class="col-lg-4">
@@ -73,7 +66,7 @@
         </header>
         <form action="{% url 'search' %}" class="search-form">
           <div class="form-group">
-            <input type="search" name="search" id="search" placeholder="What are you looking for?">
+            <input type="search" name="search" id="search" placeholder="What are you looking for?" value="{{search_term}}">
             <button type="submit" class="submit"><i class="icon-search"></i></button>
           </div>
         </form>

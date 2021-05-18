@@ -2,6 +2,8 @@ from django.http.response import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from .models import *
 
+from django.db.models import Q
+
 import json
 
 from django.contrib.auth.models import User
@@ -73,6 +75,33 @@ def post_view(request, pk):
     context = {'post':post, 'prev_post':prev_post, 'next_post':next_post, 'comments':comments,
                 'latest_posts':latest_posts}
     return render(request, 'blog/post.html', context)
+
+def search_view(request):
+    
+    search_term = request.GET.get('search')
+    
+    if search_term:
+        posts = Post.objects.filter(
+            Q(title__icontains=search_term)|
+            Q(category__icontains=search_term)| 
+            Q(description__contains=search_term)|
+            Q(content__icontains=search_term))
+
+        latest_posts = Post.objects.filter(published=True).order_by('-date_published')[:3]
+
+        paginator = Paginator(posts,8)
+
+        page = request.GET.get('page')
+
+        try:
+            page_posts = paginator.page(page)
+        except:
+            page_posts = paginator.page(1)
+
+        context = {'posts':page_posts, 'search_term':search_term, 'latest_posts':latest_posts}
+        return render(request, 'blog/search.html',context)
+    else:
+        raise Http404
 
 @login_required
 def new_post_view(request):
