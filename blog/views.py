@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import *
 
 from django.db.models import Q
+from spellchecker import SpellChecker
 
 import json
 
@@ -85,7 +86,20 @@ def search_view(request):
             Q(title__icontains=search_term)|
             Q(category__icontains=search_term)| 
             Q(description__contains=search_term)|
-            Q(content__icontains=search_term))
+            Q(content__icontains=search_term),
+            published=True)
+        correct_term = ''
+        if len(posts) <= 0:
+            spell = SpellChecker()
+
+            correct_term = spell.correction(search_term)
+
+            posts = Post.objects.filter(
+                Q(title__icontains=correct_term )|
+                Q(category__icontains=correct_term )| 
+                Q(description__contains=correct_term )|
+                Q(content__icontains=correct_term ),
+                published=True)
 
         latest_posts = Post.objects.filter(published=True).order_by('-date_published')[:3]
 
@@ -98,7 +112,7 @@ def search_view(request):
         except:
             page_posts = paginator.page(1)
 
-        context = {'posts':page_posts, 'search_term':search_term, 'latest_posts':latest_posts}
+        context = {'posts':page_posts, 'search_term':search_term, 'correct_term':correct_term,'latest_posts':latest_posts}
         return render(request, 'blog/search.html',context)
     else:
         raise Http404

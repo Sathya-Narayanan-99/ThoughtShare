@@ -11,7 +11,7 @@
     <main class="posts-listing col-lg-8"> 
       <div class="container">
         <div style="text-align: center;padding-bottom: 30px;">
-            <h3>You searched for '{{search_term}}'</h3>
+            <h3>Showing results for {% if correct_term %}<del>{{search_term}}</del> '{{correct_term}}'{% else %}'{{search_term}}'{% endif %}</h3>
         </div>
         {% if posts %}
         <div class="row">
