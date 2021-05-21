@@ -100,6 +100,9 @@ def search_view(request):
                 Q(description__contains=correct_term )|
                 Q(content__icontains=correct_term ),
                 published=True)
+        
+        if search_term == correct_term:
+            correct_term = ''
 
         latest_posts = Post.objects.filter(published=True).order_by('-date_published')[:3]
 
