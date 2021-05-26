@@ -26,9 +26,9 @@ SECRET_KEY = 'django-insecure-lt+9b&11+)w#g-1q)@ua#+#+=k2=m$gu3iu5z8yb1otqd$i3px
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-host_name = socket.gethostname()
-ip = socket.gethostbyname(host_name)
-ALLOWED_HOSTS = [ip,'0.0.0.0','127.0.0.1','thought-share.herokuapp.com']
+# host_name = socket.gethostname()
+# ip = socket.gethostbyname(host_name)
+ALLOWED_HOSTS = ['0.0.0.0','127.0.0.1','thought-share.herokuapp.com']
 
 
 # Application definition
