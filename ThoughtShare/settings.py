@@ -24,7 +24,7 @@ STACIC_DIR = BASE_DIR/'static'
 SECRET_KEY = 'django-insecure-lt+9b&11+)w#g-1q)@ua#+#+=k2=m$gu3iu5z8yb1otqd$i3px'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # host_name = socket.gethostname()
 # ip = socket.gethostbyname(host_name)
