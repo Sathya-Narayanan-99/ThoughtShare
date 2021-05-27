@@ -1,5 +1,6 @@
 asgiref
 certifi==2020.12.5
+dj-database-url==0.5.0
 Django
 django-ckeditor==6.0.0
 django-js-asset==1.2.2
@@ -9,6 +10,7 @@ olefile==0.46
 Pillow
 psycopg2
 pyspellchecker==0.6.2
+python-dotenv==0.17.1
 pytz
 sqlparse
 whitenoise==5.2.0

@@ -13,9 +13,14 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import socket
 
+import os
+import dj_database_url
+import dotenv
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 STACIC_DIR = BASE_DIR/'static'
+DOTENV_FILE = BASE_DIR/'.env'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -24,7 +29,7 @@ STACIC_DIR = BASE_DIR/'static'
 SECRET_KEY = 'django-insecure-lt+9b&11+)w#g-1q)@ua#+#+=k2=m$gu3iu5z8yb1otqd$i3px'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # host_name = socket.gethostname()
 # ip = socket.gethostbyname(host_name)
@@ -83,13 +88,11 @@ WSGI_APPLICATION = 'ThoughtShare.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+if os.path.isfile(DOTENV_FILE):
+    dotenv.load_dotenv(DOTENV_FILE)
 
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -149,3 +152,6 @@ CKEDITOR_CONFIGS = {
         'contentsCss':'img {width: auto;}'
     },
 }
+
+options = DATABASES['default'].get('OPTIONS',{})
+options.pop('sslmode',None)
