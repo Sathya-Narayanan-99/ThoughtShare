@@ -69,11 +69,13 @@ class Post(models.Model):
         self.date_published = datetime.datetime.now()
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
+    author = models.ForeignKey(Blogger, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=200)
     email = models.EmailField(max_length=200)
     date_published = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
+    anonymous = models.BooleanField(default=True, null=True, blank=True)
 
     def __str__(self):
         return str(self.post) + ' comment ' + str(self.id)
