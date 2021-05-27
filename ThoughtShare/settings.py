@@ -29,7 +29,7 @@ DOTENV_FILE = BASE_DIR/'.env'
 SECRET_KEY = 'django-insecure-lt+9b&11+)w#g-1q)@ua#+#+=k2=m$gu3iu5z8yb1otqd$i3px'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # host_name = socket.gethostname()
 # ip = socket.gethostbyname(host_name)
