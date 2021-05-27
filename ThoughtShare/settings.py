@@ -24,7 +24,7 @@ import cloudinary_storage
 BASE_DIR = Path(__file__).resolve().parent.parent
 STACIC_DIR = BASE_DIR/'static'
 DOTENV_FILE = BASE_DIR/'.env'
-CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -33,7 +33,7 @@ CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')
 SECRET_KEY = 'django-insecure-lt+9b&11+)w#g-1q)@ua#+#+=k2=m$gu3iu5z8yb1otqd$i3px'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # host_name = socket.gethostname()
 # ip = socket.gethostbyname(host_name)
@@ -163,5 +163,9 @@ CKEDITOR_CONFIGS = {
 options = DATABASES['default'].get('OPTIONS',{})
 options.pop('sslmode',None)
 
-CLOUDINARY_STORAGE = CLOUDINARY_URL
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('Cloud_name'),
+    'API_KEY': os.environ.get('API_Key'),
+    'API_SECRET': os.environ.get('API_Secret')
+}
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
