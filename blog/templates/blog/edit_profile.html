@@ -1,0 +1,59 @@
+{% extends 'blog/base.html' %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <main class="blog-post col-lg-8">
+            <div class="container">
+                <div class="post-single">
+                    <div style="padding-right: 1em;" class="d-flex justify-content-center">
+                        <img src="{{blogger.profile_picURL}}" width="150" height="150" class="rounded-circle">
+                    </div>
+                    <div class="add-comment">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                {% for message in messages %}
+                                <div class="alert alert-danger form-group col-md-10" role="alert">
+                                    {{message}}
+                                </div>
+                                {% endfor %}
+                                <div class="col-md-12"></div>
+                                <div style="padding-top: 15px;"  class="form-group col-md-3 align-self-end">
+                                    <label for="fname"><h5>First Name</h5></label>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    {{userform.first_name}}
+                                    <small class="form-text text-muted"></small>
+                                </div>
+                                <div class="col-md-12"></div>
+                                <div style="padding-top: 15px;"   class="form-group col-md-3 align-self-end">
+                                    <label for="lname"><h5>Last Name</h5></label>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    {{userform.last_name}}
+                                    <!-- <input style="font-size: 20px;" id="lname" type="text" name="lname" placeholder="Last Name" class="form-control" required> -->
+                                    <small class="form-text text-muted"></small>
+                                </div>
+                                <div class="col-md-12"></div>
+                                <div style="padding-top: 15px;" class="form-group col-md-3 align-self-end">
+                                    <label for="lname"><h5>Bio</h5></label>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    {{bloggerform.bio}}
+                                    <!-- <input style="font-size: 20px;" id="lname" type="text" name="lname" placeholder="Last Name" class="form-control" required> -->
+                                    <small class="form-text text-muted"></small>
+                                </div>
+                                <div class="col-md-12"><br></div>
+                                <div class="form-group col-6">
+                                    <button style="width: 180px;" type="submit" class="btn btn-outline-dark">Update Profile</button>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock content %}

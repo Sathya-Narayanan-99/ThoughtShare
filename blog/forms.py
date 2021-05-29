@@ -1,7 +1,8 @@
 from django import forms
 from django.forms import fields
 
-from .models import Post, post_category
+from .models import Blogger, Post, post_category
+from django.contrib.auth.models import User
 
 class PostForm(forms.ModelForm):
     def __init__(self,*args,**kwargs):
@@ -15,3 +16,23 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ["title","post_pic","description","category","content"]
+
+class UserEditForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['first_name'].widget.attrs.update({'class':'form-control','placeholder':'First Name','required':True})
+        self.fields['last_name'].widget.attrs.update({'class':'form-control','placeholder':'First Name','required':True})
+
+    class Meta:
+        model = User
+        fields = ["first_name","last_name"]
+
+class BloggerEditForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['bio'].widget.attrs.update({'class':'form-control','placeholder':'A small intro about you','required':True})
+        self.fields['profile_pic'].widget.attrs.update({'class':'form-control','placeholder':'First Name','required':True})
+
+    class Meta:
+        model = Blogger
+        fields = ["bio","profile_pic"]

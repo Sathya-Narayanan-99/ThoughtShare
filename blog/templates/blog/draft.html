@@ -29,7 +29,7 @@
               </div><a href="{% url 'preview' post.id %}">
                 <h3 class="h4">{{post.title|truncatechars:50}}</h3></a>
               <p class="text-muted">{{post.description|truncatechars:100}}</p>
-              <footer style="position: absolute; bottom: 50px;" class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
+              <footer style="position: absolute; bottom: 50px;" class="post-footer d-flex align-items-center"><a href="{% url 'profile' post.author.user.username %}" class="author d-flex align-items-center flex-wrap">
                   <div class="avatar"><img src="{{post.author.profile_picURL}}" alt="..." class="img-fluid"></div>
                   <div class="title"><span>{{post.author.name}}</span></div></a>
               </footer>

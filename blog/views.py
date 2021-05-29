@@ -18,7 +18,7 @@ from django.http import Http404, JsonResponse, HttpResponseRedirect
 
 from django.core.paginator import Paginator
 
-from .forms import PostForm
+from .forms import PostForm, UserEditForm, BloggerEditForm
 # Create your views here.
 def home_view(request):
     top_posts = Post.objects.filter(published=True).order_by('-views')[:3]
@@ -71,7 +71,7 @@ def post_view(request, pk):
     
     latest_posts = Post.objects.filter(published=True).order_by('-date_published')[:3]
 
-    comments = Comment.objects.filter(post=post)
+    comments = Comment.objects.filter(post=post).order_by("date_published")
 
     context = {'post':post, 'prev_post':prev_post, 'next_post':next_post, 'comments':comments,
                 'latest_posts':latest_posts}
@@ -265,9 +265,30 @@ def profile_view(request, username):
     except:
         raise Http404
     
-    posts = Post.objects.filter(author=blogger, published=True)
+    posts = Post.objects.filter(author=blogger, published=True).order_by("-date_published")
     context = {'blogger':blogger, 'posts':posts}
     return render(request, 'blog/profile.html', context)
+
+@login_required
+def edit_profile_view(request, username):
+    try:
+        user = User.objects.get(username=username)
+        blogger = Blogger.objects.get(user=user)
+    except:
+        raise Http404
+
+    if request.user != user:
+        return HttpResponseRedirect(reverse('home'))
+    if request.method == 'GET':
+
+        userform = UserEditForm(instance=user)
+        bloggerform = BloggerEditForm(instance=blogger)
+
+        context = {'userform':userform,'bloggerform':bloggerform, 'blogger':blogger}
+        return render(request, 'blog/edit_profile.html', context)
+    
+    if request.method == 'POST':
+        print(request.POST['last_name'])
 #--------------------------------------------------------------------------------------------------
 #
 #--------------------------------------------------------------------------------------------------

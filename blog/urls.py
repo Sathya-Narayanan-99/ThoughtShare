@@ -8,6 +8,7 @@ urlpatterns = [
     path('draft/', views.draft_view, name='draft'),
     path('search/', views.search_view, name='search'),
     path('profile/<str:username>/', views.profile_view, name='profile'),
+    path('profile/<str:username>/edit', views.edit_profile_view, name='edit_profile'),
 
     path('new/', views.new_post_view, name='new_post'),
     path('edit/<int:pk>/', views.edit_post_view, name='edit'),
