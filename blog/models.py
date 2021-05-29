@@ -15,6 +15,7 @@ class Blogger(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null = True)
     name = models.CharField(max_length=200)
     email = models.EmailField(max_length=200, blank=True, null=True)
+    bio = models.CharField(max_length=100, blank=True, null=True)
     profile_pic = models.ImageField(null=True, blank=True)
 
     def __str__(self):

@@ -257,6 +257,17 @@ def user_registration(request):
         
     else:
         return render (request, 'blog/registration.html',{'passwordValidations':passwordValidations})
+
+def profile_view(request, username):
+    try:
+        user = User.objects.get(username=username)
+        blogger = Blogger.objects.get(user=user)
+    except:
+        raise Http404
+    
+    posts = Post.objects.filter(author=blogger, published=True)
+    context = {'blogger':blogger, 'posts':posts}
+    return render(request, 'blog/profile.html', context)
 #--------------------------------------------------------------------------------------------------
 #
 #--------------------------------------------------------------------------------------------------

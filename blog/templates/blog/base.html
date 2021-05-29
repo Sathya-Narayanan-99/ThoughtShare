@@ -62,6 +62,18 @@
           </div>
           <!-- Navbar Menu -->
           <div id="navbarcollapse" class="collapse navbar-collapse">
+            {% if user.is_authenticated %}
+            <ul class="navbar-nav d-block d-lg-none">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <img src="{{user.blogger.profile_picURL}}" width="40" height="40" class="rounded-circle">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="{% url 'profile' user.username %}">View Profile</a>
+                  <a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>
+                </div>
+            </ul>
+            {% endif %}
             <ul class="navbar-nav ml-auto">
               {% if user.is_superuser %}
               <li class="nav-item"><a href="{% url 'admin:index' %}" class="nav-link">Admin</a>
@@ -76,13 +88,23 @@
               </li>
               <li class="nav-item"><a href="{% url 'draft' %}" class="nav-link {% block draft_page_header %}{% endblock draft_page_header %}">Drafts</a>
               </li>
-              <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link ">Logout</a>
-              </li>
               {% else %}
               <li class="nav-item"><a href="{% url 'login' %}" class="nav-link {% block login_page_header %}{% endblock login_page_header %}">Login</a>
               </li>
               {% endif %}
             </ul>
+            {% if user.is_authenticated %}
+            <ul class="navbar-nav d-none d-lg-block">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <img src="{{user.blogger.profile_picURL}}" width="40" height="40" class="rounded-circle">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="{% url 'profile' user.username %}">View Profile</a>
+                  <a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>
+                </div>
+            </ul>
+            {% endif %}
             <div class="navbar-text"><a href="#" class="search-btn"><i class="icon-search-1"></i></a></div>
             <ul class="langs navbar-text"><a class="active">EN</a></ul>
           </div>

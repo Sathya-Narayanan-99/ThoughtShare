@@ -29,7 +29,7 @@
               </div><a href="{% url 'post' post.id %}">
                 <h3 class="h4">{{post.title|truncatechars:50}}</h3></a>
               <p class="text-muted">{{post.description|truncatechars:100}}</p>
-              <footer style="position: absolute; bottom: -2em; padding-top: 2em;" class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
+              <footer style="position: absolute; bottom: -2em; padding-top: 2em;" class="post-footer d-flex align-items-center"><a href="{% url 'profile' post.author.user.username %}" class="author d-flex align-items-center flex-wrap">
                   <div class="avatar"><img src="{{post.author.profile_picURL}}" alt="..." class="img-fluid"></div>
                   <div class="title"><span>{{post.author.name}}</span></div></a>
                 <div class="date"><i class="icon-clock"></i>{{post.date_published|date:"d M Y"}}</div>
@@ -88,30 +88,6 @@
           </div></a>
           {% endfor %}
       </div>
-      <!-- Widget [Categories Widget]-->
-      <!-- <div class="widget categories">
-        <header>
-          <h3 class="h6">Categories</h3>
-        </header>
-        <div class="item d-flex justify-content-between"><a href="#">Growth</a><span>12</span></div>
-        <div class="item d-flex justify-content-between"><a href="#">Local</a><span>25</span></div>
-        <div class="item d-flex justify-content-between"><a href="#">Sales</a><span>8</span></div>
-        <div class="item d-flex justify-content-between"><a href="#">Tips</a><span>17</span></div>
-        <div class="item d-flex justify-content-between"><a href="#">Local</a><span>25</span></div>
-      </div> -->
-      <!-- Widget [Tags Cloud Widget]-->
-      <!-- <div class="widget tags">       
-        <header>
-          <h3 class="h6">Tags</h3>
-        </header>
-        <ul class="list-inline">
-          <li class="list-inline-item"><a href="#" class="tag">#Business</a></li>
-          <li class="list-inline-item"><a href="#" class="tag">#Technology</a></li>
-          <li class="list-inline-item"><a href="#" class="tag">#Fashion</a></li>
-          <li class="list-inline-item"><a href="#" class="tag">#Sports</a></li>
-          <li class="list-inline-item"><a href="#" class="tag">#Economy</a></li>
-        </ul>
-      </div> -->
     </aside>
   </div>
 </div>
