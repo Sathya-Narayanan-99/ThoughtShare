@@ -322,7 +322,39 @@ def edit_profile_view(request, username):
             blogger.save()
             
             return HttpResponseRedirect(reverse('edit_profile', args=[username]))
-            
+
+@login_required
+def change_password_view(request, username):
+    if request.user.username != username:
+        raise Http404
+    
+    passwordValidations = password_validation.password_validators_help_texts()
+    context = {'passwordValidations':passwordValidations}
+
+    if request.method == 'GET':
+        return render(request, 'blog/change_password.html', context)
+
+    if request.method == 'POST':
+        old_password = request.POST.get('old-password')
+        
+        user = authenticate(username=username, password=old_password)
+
+        if user:
+            password = request.POST.get('password')
+            rpassword = request.POST.get('rpassword')
+
+            if password == rpassword:
+                user.set_password(password)
+                user.save()
+                return HttpResponseRedirect(reverse('login'))
+
+            else:
+                messages.error(request, "Your newg passwords didn't match")
+                return render(request, 'blog/change_password.html', context)
+
+        else:
+            messages.error(request, "Your old password is incorrect")
+            return render(request, 'blog/change_password.html', context)
 #--------------------------------------------------------------------------------------------------
 #
 #--------------------------------------------------------------------------------------------------
