@@ -38,7 +38,7 @@ form.reset();
 
 var comments = document.getElementsByClassName("d-none");
 
-if (comments.length === 0){
+if (comments.length < 3){
     document.getElementById("load-comments-div").innerHTML='';
 }
 
