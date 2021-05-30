@@ -221,8 +221,6 @@ def user_registration(request):
     if request.method == 'POST':
         username = request.POST.get('username').strip().lower()
         email = request.POST.get('email').strip().lower()
-        fname = request.POST.get('fname').capitalize()
-        lname = request.POST.get('lname').capitalize()
         password = request.POST.get('password')
         rpassword = request.POST.get('rpassword')
 
@@ -245,15 +243,17 @@ def user_registration(request):
                 messages.error(request, error)
             return render (request, 'blog/registration.html',{'passwordValidations':passwordValidations})
 
-        user = User(is_superuser=False, is_staff=False, username=username, email=email, first_name=fname, last_name=lname)
+        user = User(is_superuser=False, is_staff=False, username=username, email=email)
         user.set_password(password)
         user.save()
 
         blogger = Blogger(user=user)
-        blogger.create()
         blogger.save()
 
-        return HttpResponseRedirect(reverse('login'))
+        user = authenticate(username=username, password=password)
+        login(request, user)
+
+        return HttpResponseRedirect(reverse('edit_profile', args=[username]))
         
     else:
         return render (request, 'blog/registration.html',{'passwordValidations':passwordValidations})
@@ -309,6 +309,19 @@ def edit_profile_view(request, username):
             blogger.save()
 
             return HttpResponseRedirect(reverse('profile', args=[n_username]))
+        if "propic" in request.FILES:
+            propic = request.FILES.get("propic")
+            blogger.profile_pic = propic
+            blogger.save()
+            
+            return HttpResponseRedirect(reverse('edit_profile', args=[username]))
+        
+        if "propic" in request.POST:
+            propic = request.FILES.get("propic")
+            blogger.profile_pic = None
+            blogger.save()
+            
+            return HttpResponseRedirect(reverse('edit_profile', args=[username]))
             
 #--------------------------------------------------------------------------------------------------
 #

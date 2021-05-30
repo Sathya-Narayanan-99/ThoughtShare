@@ -2,6 +2,12 @@
 
 
 {% block content %}
+<style>
+    #propic{
+        transition: 0.3s;
+    }
+    #propic:hover{opacity: 0.8;}
+</style>
 <div class="container">
     <div class="row justify-content-center">
         <main class="blog-post col-lg-8">
@@ -11,7 +17,30 @@
                         {% csrf_token %}
                         <div style="padding-right: 1em;" class="d-flex justify-content-center">
                             <img style=" cursor: pointer;" id="propic" src="{{blogger.profile_picURL}}" width="150" height="150" class="rounded-circle">
-                            <input id="propic-upload" type="file" accept="image/*" hidden>
+                            <div class="close-btn"><i class="icon-close" data-toggle="modal" data-target="#exampleModal"></i></div>
+                            <input id="propic-upload" name=propic type="file" accept="image/*" hidden>
+                            <input id="propic-submit" type="submit" hidden>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered " role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Remove Profile Picture</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to remove your profile picture?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+                                    <button  id="remove-propic"  type="button" class="btn btn-outline-danger">Remove</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
                         </div>
                     </form>
                     <div class="add-comment">
@@ -45,7 +74,6 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     {{userform.last_name}}
-                                    <!-- <input style="font-size: 20px;" id="lname" type="text" name="lname" placeholder="Last Name" class="form-control" required> -->
                                     <small class="form-text text-muted"></small>
                                 </div>
                                 <div class="col-md-12"></div>
@@ -54,12 +82,15 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     {{bloggerform.bio}}
-                                    <!-- <input style="font-size: 20px;" id="lname" type="text" name="lname" placeholder="Last Name" class="form-control" required> -->
                                     <small class="form-text text-muted"></small>
                                 </div>
                                 <div class="col-md-12"><br></div>
                                 <div class="form-group col-6">
                                     <button style="width: 180px;" type="submit" class="btn btn-outline-dark">Update Profile</button>
+                                </div>
+                                <div class="col-md-12"><br></div>
+                                <div class="form-group col-6">
+                                    <p>Change Password? <a href="{% url 'registration' %}">Click here!</a></p>
                                 </div>
                         </form>
                     </div>
@@ -74,6 +105,9 @@
     })
 
     document.getElementById("propic-upload").addEventListener('change',function(){
+        document.getElementById("propic-form").submit()
+    })
+    document.getElementById("remove-propic").addEventListener('click',function(){
         document.getElementById("propic-form").submit()
     })
 </script>
