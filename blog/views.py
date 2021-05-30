@@ -344,16 +344,21 @@ def change_password_view(request, username):
             rpassword = request.POST.get('rpassword')
 
             if password == rpassword:
-                user.set_password(password)
-                user.save()
-                return HttpResponseRedirect(reverse('login'))
+                if password == old_password:
+                    messages.error(request, "Old password and new password cannot be same.")
+                    return render(request, 'blog/change_password.html', context)
+
+                else:
+                    user.set_password(password)
+                    user.save()
+                    return HttpResponseRedirect(reverse('login'))
 
             else:
-                messages.error(request, "Your newg passwords didn't match")
+                messages.error(request, "Your new passwords didn't match.")
                 return render(request, 'blog/change_password.html', context)
 
         else:
-            messages.error(request, "Your old password is incorrect")
+            messages.error(request, "Your old password is incorrect.")
             return render(request, 'blog/change_password.html', context)
 #--------------------------------------------------------------------------------------------------
 #

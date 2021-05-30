@@ -144,7 +144,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [STACIC_DIR]
 
 MEDIA_URL = '/media/'
-# MEDIA_ROOT = BASE_DIR/'media'
+if os.getcwd() != "/app":
+    MEDIA_ROOT = BASE_DIR/'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

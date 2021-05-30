@@ -64,11 +64,13 @@
               <div class="comment {% if forloop.counter > 3 %}d-none{% endif %}">
                 <div class="comment-header d-flex justify-content-between">
                   <div class="user d-flex align-items-center">
+                    <a {% if not comment.anonymous %}href="{% url 'profile' comment.author.user.username %}"{% endif %}>
                     <div class="image"><img src="{% if comment.author %}{{comment.author.profile_picURL}}{% else %}{% static 'img/user.svg' %}{% endif %}" alt="..." class="img-fluid rounded-circle"></div>
                     <div class="title">
                       <strong>{{comment.name}} 
                         {% ifequal comment.email post.author.email%}(author){% endifequal %}
-                        {% if comment.anonymous %}(Anonymous){% endif %}</strong>
+                        {% if comment.anonymous %}(Anonymous){% endif %}</strong></a>
+                        <br>
                       <span class="date">{{comment.date_published|date:"d M Y"}}</span></div>
                   </div>
                 </div>
