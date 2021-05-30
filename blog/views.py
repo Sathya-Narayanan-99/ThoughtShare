@@ -287,8 +287,29 @@ def edit_profile_view(request, username):
         context = {'userform':userform,'bloggerform':bloggerform, 'blogger':blogger}
         return render(request, 'blog/edit_profile.html', context)
     
-    if request.method == 'POST':
-        print(request.POST['last_name'])
+    elif request.method == 'POST':
+        if "username" and "first_name" and "last_name" and "bio" in request.POST:
+            
+            n_username = request.POST.get("username").strip().lower()
+            fname = request.POST.get('first_name').strip().capitalize()
+            lname = request.POST.get('last_name').strip().capitalize()
+            bio = request.POST.get('bio').strip()
+
+            if User.objects.filter(username=n_username).exists() and user.username != n_username:
+                messages.error(request,"Sorry! Username is already taken")
+                return HttpResponseRedirect(reverse('edit_profile',args=[username]))
+
+            user.username = n_username
+            user.first_name = fname
+            user.last_name = lname
+            user.save()
+
+            blogger.bio = bio
+            blogger.create()
+            blogger.save()
+
+            return HttpResponseRedirect(reverse('profile', args=[n_username]))
+            
 #--------------------------------------------------------------------------------------------------
 #
 #--------------------------------------------------------------------------------------------------

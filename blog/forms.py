@@ -20,12 +20,13 @@ class PostForm(forms.ModelForm):
 class UserEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'class':'form-control','placeholder':'Username','required':True})
         self.fields['first_name'].widget.attrs.update({'class':'form-control','placeholder':'First Name','required':True})
         self.fields['last_name'].widget.attrs.update({'class':'form-control','placeholder':'First Name','required':True})
 
     class Meta:
         model = User
-        fields = ["first_name","last_name"]
+        fields = ["username","first_name","last_name"]
 
 class BloggerEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

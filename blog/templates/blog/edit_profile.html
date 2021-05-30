@@ -7,11 +7,15 @@
         <main class="blog-post col-lg-8">
             <div class="container">
                 <div class="post-single">
-                    <div style="padding-right: 1em;" class="d-flex justify-content-center">
-                        <img src="{{blogger.profile_picURL}}" width="150" height="150" class="rounded-circle">
-                    </div>
+                    <form id="propic-form" name="propic-form" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div style="padding-right: 1em;" class="d-flex justify-content-center">
+                            <img style=" cursor: pointer;" id="propic" src="{{blogger.profile_picURL}}" width="150" height="150" class="rounded-circle">
+                            <input id="propic-upload" type="file" accept="image/*" hidden>
+                        </div>
+                    </form>
                     <div class="add-comment">
-                        <form method="POST">
+                        <form name="profile-form" method="POST">
                             {% csrf_token %}
                             <div class="row">
                                 {% for message in messages %}
@@ -19,6 +23,14 @@
                                     {{message}}
                                 </div>
                                 {% endfor %}
+                                <div class="col-md-12"></div>
+                                <div style="padding-top: 15px;"  class="form-group col-md-3 align-self-end">
+                                    <label for="username"><h5>Username</h5></label>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    {{userform.username}}
+                                    <small class="form-text text-muted"></small>
+                                </div>
                                 <div class="col-md-12"></div>
                                 <div style="padding-top: 15px;"  class="form-group col-md-3 align-self-end">
                                     <label for="fname"><h5>First Name</h5></label>
@@ -56,4 +68,13 @@
         </main>
     </div>
 </div>
+<script>
+    document.getElementById("propic").addEventListener('click',function(){
+        document.getElementById("propic-upload").click()
+    })
+
+    document.getElementById("propic-upload").addEventListener('change',function(){
+        document.getElementById("propic-form").submit()
+    })
+</script>
 {% endblock content %}
