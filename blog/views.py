@@ -392,6 +392,24 @@ def add_comment(request):
     return JsonResponse("comment was added", safe=False)
 
 @login_required
+def delete_comment(request):
+    data = json.loads(request.body)
+
+    commentId = data['commentId']
+    
+    try:
+        comment = Comment.objects.get(id=commentId)
+    except Exception as e:
+        print("error while adding comment",e)
+    
+    if request.user == comment.post.author.user:
+        comment.delete()
+    else:
+        print("Logged in user not the post author is trying to delete a comment")
+        
+    return JsonResponse("comment was deleted", safe=False)
+
+@login_required
 def add_to_draft(request):
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)

@@ -20,6 +20,7 @@ urlpatterns = [
     path('change_password/<str:username>/', views.change_password_view, name='change_password'),
 
     path('add_comment/', views.add_comment, name='add_comment'),
+    path('delete_comment/', views.delete_comment, name='delete_comment'),
     path('add_to_draft/', views.add_to_draft, name='add_to_draft'),
     path('publish_post/<int:pk>/', views.publish_post, name='publish_post'),
     path('edit_draft/<int:pk>/', views.add_edit_draft, name='edit_draft'),

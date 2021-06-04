@@ -1,17 +1,18 @@
-form = document.getElementById('comment-form');
+// Add comment
+var addForm = document.getElementById('comment-form');
 
-form.addEventListener("submit",function(e){
+addForm.addEventListener("submit",function(e){
     e.preventDefault();
 
     if (user == 'AnonymousUser'){
         var commentFormData = {
-            'username' : form.username.value,
-            'email' : form.email.value,
-            'content' : form.content.value,
+            'username' : addForm.username.value,
+            'email' : addForm.email.value,
+            'content' : addForm.content.value,
         }
     }else{
         var commentFormData = {
-            'content' : form.content.value,
+            'content' : addForm.content.value,
         }        
     }
 
@@ -34,8 +35,36 @@ form.addEventListener("submit",function(e){
         location.reload();
     })
 })
-form.reset();
+addForm.reset();
 
+// delete comment
+var deleteComments = document.getElementsByClassName("delete-comment")
+
+for (var i = 0; i < deleteComments.length; i++) {
+    deleteComments[i].addEventListener("click", function(e){
+        e.preventDefault()
+        commentId = this.dataset.comment
+        
+        var url = "/delete_comment/"
+        fetch(url,{
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrf
+            },
+            body:JSON.stringify({'commentId':commentId})
+        })
+        .then((response) =>{
+            return response.json()
+        })
+    
+        .then((data) => {
+            location.reload();
+        })
+    })   
+}
+
+// load more
 var comments = document.getElementsByClassName("d-none");
 
 if (comments.length < 3){
